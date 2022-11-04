@@ -1,0 +1,16 @@
+extends layout 
+
+block content
+  .messages-container
+    h1 Message Feed
+    each message in messages_list
+      .message
+        .title #[strong #{message.title}]
+        .text #{message.text}
+        if(user.member)
+          .date #{message.date.getHours()+1}:#{message.date.getMinutes()+1}    #{message.date.getMonth() + 1}/#{message.date.getDate()}/#{message.date.getFullYear() + 1}
+          .author #{message.user.lastName}, #{message.user.firstName}
+        if(user.admin)
+          form(action="" method="POST")
+            input#messageId(type="hidden" name="messageId" value=message._id)
+            button.delete(type="submit" name="submit") Delete

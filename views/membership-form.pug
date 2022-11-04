@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  if(user.member)
+    div You are already a member!
+  else
+    form(method='POST' action = '')
+      .form-group
+        label(for='password') Enter the password
+        input#password(name="password" type="text" required=true)
+        button(type="submit") Submit
+
+  if (error)
+    div error

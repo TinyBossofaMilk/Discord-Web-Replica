@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/styles.css')
+    meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  body
+    div.container
+      nav.navbar 
+        a(href="/").title
+          h3 Discord
+        //- If User is NOT logged in
+        if (!user)
+          ul 
+            a(href="/log-in") 
+              li Log in
+            a(href="/sign-up")
+              li Sign up
+        //- If User IS logged in
+        else 
+          ul
+            a(href="/message-form") 
+              li Create Message
+            a(href="/membership-form") 
+              li Become a member!
+            //- a(href="/admin")  
+            //-   li Admin
+            a(href="/log-out") 
+              li Log out 
+      
+        if (user)
+          p.username-layout User: #{user.firstName} #{user.lastName} 
+      block content
