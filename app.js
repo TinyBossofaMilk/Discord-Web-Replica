@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var dotenv = require('dotenv').config;
+const dotenv = require('dotenv').config();
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -31,9 +31,7 @@ app.use(helmet());
 app.use(compression()); // Compress all routes
 
 
-// const mongoDb = process.env.MONGODB_URI;
-const mongoDb = "mongodb+srv://tinybossofamilk:A1B2C3@sandbox.pik9tii.mongodb.net/Discord-Replica?retryWrites=true&w=majority";
-console.log(mongoDb)
+const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
