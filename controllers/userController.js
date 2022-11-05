@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {body, validationResult} = require("express-validator");
-const bcryptjs = require("bcryptjs");
+var bcrypt = require("bcryptjs");
 const passport = require("passport")
 
 const User = require("../models/user");
@@ -16,6 +16,7 @@ exports.sign_up_get = (req, res) => {
 };
 
 exports.sign_up_post = [
+  //validate fields
   body("username").trim().isLength({min:1}).withMessage("Username must not be empty"),
   body("email").trim().isLength({min:1}).withMessage("Email must not be empty"),
   body("password").trim().isLength({min:1}).withMessage("Email must not be empty"),
@@ -29,7 +30,7 @@ exports.sign_up_post = [
       console.log("ERROR MAKING ACCOUNT")
       res.render("sign-up", {
         username: req.body.username,
-        password: req.body.password,
+        // password: req.body.password,
         email: req.body.email,
         errors: errors.array(),
       })
@@ -41,10 +42,14 @@ exports.sign_up_post = [
       
       const user = new User({
         username: req.body.username,
-        password: req.body.password,
         email: req.body.email,
         password: hashedPassword,
-      }).save(err => err ? next(err) : res.redirect("/"));
+        userID: "3853",
+        friends:[],
+        friendReqs: []
+      });
+      
+      user.save(err => err ? next(err) : res.redirect("/"));
     })
   }
 ];
@@ -69,4 +74,13 @@ exports.send_friend_req = (req, res) => {
 
 exports.accept_friend_req = (req, res) => {
 
+};
+
+exports.getHashedPasswordFor = async password => {
+  const result = await bcrypt.hash(password, 10)
+    .then(hashedPassword => ({ hashedPassword }))
+    .catch(error => ({ error }));
+  if (result.error) throw result.error;
+
+  return result.hashedPassword;
 };

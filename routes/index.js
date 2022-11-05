@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
 //Import Controllers
 const userController = require("../controllers/userController");
 const serverController = require("../controllers/serverController");
 const messageController = require("../controllers/messageController");
 // const channelController = require("../controllers/channel");
 
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 
 router.get("/sign-up", userController.sign_up_get);
 
@@ -34,6 +34,13 @@ router.post("/log-in", userController.log_in_post);
 // router.post("/message-form", messageController.message_form_post)
 
 // router.post("/messages", messageController.message_delete_post);
+
+
+/*SERVER********************************************************** */
+
+router.get("/create-server", serverController.get_create_server);
+
+// router.post("/create-server", serverController.get_create_server);
 
 
 module.exports = router;

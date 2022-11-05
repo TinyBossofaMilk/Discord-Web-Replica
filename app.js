@@ -30,10 +30,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(compression()); // Compress all routes
 
+
+// const mongoDb = process.env.MONGODB_URI;
+const mongoDb = "mongodb+srv://tinybossofamilk:A1B2C3@sandbox.pik9tii.mongodb.net/Discord-Replica?retryWrites=true&w=majority";
+console.log(mongoDb)
+mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "mongo connection error"));
+
 // passport
 passport.use(
   new LocalStrategy((username, password, done) => {
-    User.findOne({ email: username }, (err, user) => {
+    User.findOne({ username: username }, (err, user) => {
       if (err) return done(err);
       if (!user) return done(null, false, { message: "Incorrect username" });
       bcrypt.compare(password, user.password, (err, res) => {

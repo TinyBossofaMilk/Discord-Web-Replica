@@ -5,8 +5,8 @@ let userSchema = new Schema({
     username: {type: String},
     email: {type: String},
     password: {type: String},
-    friends: [{type: Schema.ObjectId, ref:"user"}],
     userID: {type: String},
+    friends: [{type: Schema.ObjectId, ref:"user"}],
     friendReqs: [{type: Schema.ObjectId, ref:"user"}]
 });
 
