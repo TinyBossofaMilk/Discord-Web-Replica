@@ -8,6 +8,7 @@
     "sass-transpile": "node-sass -w public/stylesheets scss -o public/stylesheets"
   },
   "dependencies": {
+    "async": "^3.2.4",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",

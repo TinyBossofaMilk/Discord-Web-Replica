@@ -10,8 +10,13 @@ html
         //- add friends DM list
         //- add channels
 
+        if (!user)
+          nav.secondary-bar
         
-        a(href="/create-server")
-        if (user)
-          p.username-layout User: #{user.firstName} #{user.lastName} 
+        a(href="/create-server") Create Server
+        //- p.username-layout User: #{user.username} 
+      
+      //- include secondary-side-bar
+
+
       block content

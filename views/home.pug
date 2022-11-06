@@ -1,5 +1,7 @@
-extends layout 
-
-block content
-  
+//- extends layout 
+//- block content
+if(!user)
   div Welcome to Discord Web Replica
+  a(href="/log-in") Log In 
+  span or 
+  a(href="/sign-up") Sign up

@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    include channel-side-bar
+
+    each message in messages 
+        div.message #{message}

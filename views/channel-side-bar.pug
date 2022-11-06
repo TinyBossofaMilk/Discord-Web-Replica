@@ -1,0 +1,6 @@
+//- div.server_name #{server.name}
+//- each channel in #{server.channels}
+div.secondary-side-bar
+    div This is the channel side bar
+    for channel in server.channels
+        a(href=`/server/${server._id}/channel/${channel._id}`) #{channel.name}

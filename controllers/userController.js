@@ -64,7 +64,7 @@ exports.log_in_get = (req, res) => {
 }
 
 exports.log_in_post = passport.authenticate("local", {
-    successRedirect: "/messages",
+    successRedirect: "/create-server",
     failureRedirect: "/log-in"
 });
 

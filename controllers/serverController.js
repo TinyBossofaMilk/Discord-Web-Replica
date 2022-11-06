@@ -3,10 +3,40 @@ var router = express.Router();
 const {body, validationResult} = require("express-validator");
 
 const Server = require("../models/server");
+const Channel = require("../models/channel")
 
-exports.get_create_server = (req, res, next) => {
-    res.render("server-form");
-};
+exports.get_create_server = (req, res) => {res.render("server-form");};
+
+exports.post_create_server = [
+    body("name").trim().isLength({min:1}).escape(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            console.log("ERROR MAKING ACCOUNT")
+            res.render("error", {errors: errors.array(),})
+            return;
+        };
+        console.log("here")
+        const generalChannel = new Channel({
+            name: "General",
+            privacy: "public"
+        }).save((err, generalChannel) => {
+            console.log("here2")
+            const newServer = new Server({
+                name: req.body.name,
+                admin: res.locals.currentUser,
+                members: [res.locals.currentUser],
+                // channels: [generalChannel],
+                channels: [generalChannel],
+                passcode: null,
+                privacy: "public",
+                layout: []
+            });
+            newServer.save(err => err ? next(err) : res.redirect(newServer.url));
+        })
+        
+    }
+];
 
 exports.get_delete_server = (req, res, next) => {
 
@@ -21,3 +51,11 @@ exports.delete_member = (req, res, next) => {};
 exports.add_banned_member =  (req, res, next) => {};
 
 exports.add_channel = (req, res, next) => {};
+
+exports.get_server = (req, res, next) => {    
+    Server.findById(req.params.id).populate("channels").exec((err, server) => {
+        if(err) next(err);
+        console.log(server);
+        res.render("server-page", {server: server})
+    })
+};

@@ -5,13 +5,15 @@ var router = express.Router();
 const userController = require("../controllers/userController");
 const serverController = require("../controllers/serverController");
 const messageController = require("../controllers/messageController");
-// const channelController = require("../controllers/channel");
+const channelController = require("../controllers/channelController");
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('home');
 });
+
+
 
 router.get("/sign-up", userController.sign_up_get);
 
@@ -40,7 +42,16 @@ router.post("/log-in", userController.log_in_post);
 
 router.get("/create-server", serverController.get_create_server);
 
-// router.post("/create-server", serverController.get_create_server);
+router.post("/create-server", serverController.post_create_server);
+
+router.get("/server/:id", serverController.get_server);
+
+
+/*CHANNELS********************************************************** */
+
+router.get('/channels', channelController.get_channels);
+
+
 
 
 module.exports = router;
