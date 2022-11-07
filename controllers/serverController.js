@@ -3,7 +3,7 @@ var router = express.Router();
 const {body, validationResult} = require("express-validator");
 
 const Server = require("../models/server");
-const Channel = require("../models/channel")
+const Channel = require("../models/channel");
 
 exports.get_create_server = (req, res) => {res.render("server-form");};
 
@@ -52,10 +52,10 @@ exports.add_banned_member =  (req, res, next) => {};
 
 exports.add_channel = (req, res, next) => {};
 
-exports.get_server = (req, res, next) => {    
+exports.get_server = (req, res, next) => {
     Server.findById(req.params.id).populate("channels").exec((err, server) => {
         if(err) next(err);
-        console.log(server);
+        // console.log(server);
         res.render("server-page", {server: server})
     })
 };

@@ -13,8 +13,6 @@ router.get('/', function(req, res, next) {
   res.render('home');
 });
 
-
-
 router.get("/sign-up", userController.sign_up_get);
 
 router.post("/sign-up", userController.sign_up_post);
@@ -49,8 +47,8 @@ router.get("/server/:id", serverController.get_server);
 
 /*CHANNELS********************************************************** */
 
-router.get('/channels', channelController.get_channels);
-
+router.get('/server/:serverId/channel/:channelId', channelController.get_channel);
+// router.get('/channels', channelController.get_channels);
 
 
 
