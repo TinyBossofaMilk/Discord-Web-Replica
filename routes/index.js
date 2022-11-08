@@ -48,7 +48,22 @@ router.get("/server/:id", serverController.get_server);
 /*CHANNELS********************************************************** */
 
 router.get('/server/:serverId/channel/:channelId', channelController.get_channel);
+
 // router.get('/channels', channelController.get_channels);
+
+
+
+
+
+
+
+/*MESSAGES********************************************************** */
+
+router.post('/server/:serverId/channel/:channelId', messageController.post_message);
+
+
+
+
 
 
 

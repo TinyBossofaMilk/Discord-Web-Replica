@@ -64,7 +64,7 @@ exports.log_in_get = (req, res) => {
 }
 
 exports.log_in_post = passport.authenticate("local", {
-    successRedirect: "/create-server",
+    successRedirect: "/server/636748fba74abce85b4d6d25/channel/636748fba74abce85b4d6d23",
     failureRedirect: "/log-in"
 });
 

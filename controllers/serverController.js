@@ -16,17 +16,14 @@ exports.post_create_server = [
             res.render("error", {errors: errors.array(),})
             return;
         };
-        console.log("here")
         const generalChannel = new Channel({
             name: "General",
             privacy: "public"
         }).save((err, generalChannel) => {
-            console.log("here2")
             const newServer = new Server({
                 name: req.body.name,
                 admin: res.locals.currentUser,
                 members: [res.locals.currentUser],
-                // channels: [generalChannel],
                 channels: [generalChannel],
                 passcode: null,
                 privacy: "public",
@@ -55,7 +52,7 @@ exports.add_channel = (req, res, next) => {};
 exports.get_server = (req, res, next) => {
     Server.findById(req.params.id).populate("channels").exec((err, server) => {
         if(err) next(err);
-        // console.log(server);
+
         res.render("server-page", {server: server})
     })
 };
