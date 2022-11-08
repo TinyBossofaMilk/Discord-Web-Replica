@@ -31,7 +31,7 @@ exports.post_message = [
                 _id: channel._id,
                 name: channel.name,
                 privacy: channel.privacy,
-                messages: channel.messages.push(newMessage);
+                messages: channel.messages.push(newMessage)
             })
         });
 
