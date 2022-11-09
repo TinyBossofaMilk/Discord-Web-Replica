@@ -18,37 +18,65 @@ exports.post_message = [
             return;
         };
 
-        Channel.findById(req.params.channelId).exec((err, channel) => {
-            const newMessage = new Message({
-                user: res.locals.currentUser._id,
-                text: req.body.msg,
-                date: Date.now(),
-                // upvote:[],
-                // downvote:[]
-            });
-
-            const updatedChannel = new Channel({
-                _id: channel._id,
-                name: channel.name,
-                privacy: channel.privacy,
-                messages: channel.messages.push(newMessage)
-            })
-        });
-
-        // const newChannel = new Channel({})
-        
-        newMessage.save((err, newMessage) => {
-            Channel.findById(req.params.channelId).messages
-                .push(newMessage)
-                .save((err, result) => {
-                    if(err) next(err);
-
+        const newMessage = new Message({
+            user: res.locals.currentUser._id,
+            text: req.body.msg,
+            date: Date.now(),
+            // upvote:[],
+            // downvote:[]
+        }).save((err, newMessage) => {
+            Channel.findByIdAndUpdate(req.params.channelId, 
+                {$push: {"messages": newMessage}},
+                {safe: true, upsert: true},
+                function (err, channelInstance){
+                    if (err) { return next(err); }
                     res.redirect("/create-server");
-            });
-        })
-
+                }
+            )}
+        );
     }
 ];
+/*
+    Channel.findById(req.params.channelId).exec((err, channel) => {
+        const newMessage = new Message({
+            user: res.locals.currentUser._id,
+            text: req.body.msg,
+            date: Date.now(),
+            // upvote:[],
+            // downvote:[]
+        });
+
+        const updatedChannel = new Channel({
+            _id: channel._id,
+            name: channel.name,
+            privacy: channel.privacy,
+            messages: channel.messages.push(newMessage)
+        })
+        console.log("here");
+
+        newMessage.save((err, newMessage) => {
+            Channel.findByIdAndUpdate(req.params.channelId, updatedChannel, {}, function (err, channelInstance){
+                if (err) { return next(err); }
+                res.redirect("/create-server");
+            })
+        });
+    });
+*/
+
+/*
+var objFriends = { fname:"fname",lname:"lname",surname:"surname" };
+Friend.findOneAndUpdate(
+   { _id: req.body.id }, 
+   { $push: { friends: objFriends  } },
+  function (error, success) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(success);
+        }
+    });
+)
+*/
 
 
 /*

@@ -5,7 +5,7 @@ block content
     div.title #{channel.name}
     
     each message in channel.messages 
-        div.message message
+        div.message #{message.text}
     else 
         div No messages! Be the first to add one!
 
