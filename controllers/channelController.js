@@ -3,6 +3,7 @@ var router = express.Router();
 const {body, validationResult} = require("express-validator");
 var async = require("async");
 
+const User = require("../models/user");
 const Server = require("../models/server");
 const Channel = require("../models/channel");
 
@@ -30,7 +31,20 @@ exports.get_channel = (req, res, next) => {
                 results.channel = null;
             }
             else{
-                results.channel.messages.populate("user");
+                // results.channel.messages.forEach(msg => {
+                //     console.log(msg)
+                //     msg.populate("user");
+                // });
+
+                results.channel.messages.forEach(async msg => {
+                    msg.user = await User.findById(msg.user);
+                    console.log(msg.user);
+                });
+                    
+                // let author = await User.findById(results.channel.messages[0].user);
+                // console.log(author);
+                console.log(results.channel.messages[0]);
+                console.log(results.channel.messages[0].user);
             }
             
             res.render("channel-page", {server: results.server, channel: results.channel});
