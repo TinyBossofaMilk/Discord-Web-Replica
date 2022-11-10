@@ -9,6 +9,7 @@ const Channel = require("../models/channel");
 exports.get_channel = (req, res, next) => {
     // if(!res.locals.currentUser)
     //     res.redirect('/sign-up');
+    
     async.parallel({
         server(callback) {
             Server.findById(req.params.serverId).exec(callback);
@@ -27,6 +28,9 @@ exports.get_channel = (req, res, next) => {
 
             if(selectedChannel === undefined) {
                 results.channel = null;
+            }
+            else{
+                results.channel.messages.populate("user");
             }
             
             res.render("channel-page", {server: results.server, channel: results.channel});

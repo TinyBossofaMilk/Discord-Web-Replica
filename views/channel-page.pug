@@ -4,8 +4,12 @@ block content
     include channel-side-bar
     div.title #{channel.name}
     
-    each message in channel.messages 
-        div.message #{message.text}
+    each message in channel.messages
+        .message #{message.text}
+        .user #{message.user.username}
+        .date #{message.date}
+        .upvote #{message.upvote.length}
+
     else 
         div No messages! Be the first to add one!
 

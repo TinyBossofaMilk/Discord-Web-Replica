@@ -1,0 +1,28 @@
+SERVER
+    show SERVER you are active in, link to each one
+    friends list
+
+add admin privileges
+    delete messages
+    ban users
+    invite users
+    create mod roles
+
+USER
+    log out
+
+CHANNEL
+    upvote functionality
+    layout
+    keep/show list of users
+
+MESSAGES 
+    delete messages
+    edit messages (if you wrote it)
+    reply to other messages(in chat)
+
+DIRECT MESSAGES + GROUPS!!!
+    DMschema?
+        users involved
+        messages[]
+   
