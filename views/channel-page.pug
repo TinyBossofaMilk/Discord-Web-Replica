@@ -2,11 +2,12 @@ extends layout
 
 block content
     include channel-side-bar
-    div.title #{channel.name}
+    //- div.title #{channel.name}
     
     each message in channel.messages
         .message #{message.text}
-        .user #{message.user.username}
+        //- .user Username #{message.user.username}
+        //- .user Username: #{message.user}
         .date #{message.date}
         .upvote #{message.upvote.length}
 

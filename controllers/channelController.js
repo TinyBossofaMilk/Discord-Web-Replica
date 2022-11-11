@@ -17,16 +17,48 @@ exports.get_channel = (req, res, next) => {
             // .populate("channels")
         },
         channel(callback) {
-            Channel.findById(req.params.channelId).populate("messages").exec(callback);
-        }},
-        (err, results) => {
+            Channel.findById(req.params.channelId)
+            // .populate("messages")
+            .populate({
+                path: "messages",
+                populate: {path: 'user'}
+            })
+            .exec(callback)
+        },
+        // channel_messages(callback) {
+        //     Channel.findById(req.params.channelId)
+        //     .populate("messages")
+        //     .populate({
+        //         path: "messages.message",
+        //         populate:"user"
+        //     })
+        //     .exec(callback)
+        // }
+
+        // Channel.findById(req.params.channelId).exec().then((channel) => ([
+        //     channel,
+        //     // Messages.findById(channel.messages).exec()
+        //   ])).then(([parent, child]) => ([
+        //     parent,
+        //     child,
+        //     SubChild.findById(child.subChild).exec()
+        //   ])).then(([parent, child, subChild]) => {
+        //     child.subChild = subChild;
+        //     parent.child = child;
+          
+        //     return parent;
+        //   });
+        
+    },
+        async (err, results) => {
             if(err) next(err);
 
             // find selected channel
             const selectedChannel = results.server.channels.find((c)=> {
                 return c._id.toString() === req.params.channelId;
             });
-
+            
+            let a;
             if(selectedChannel === undefined) {
                 results.channel = null;
             }
@@ -36,23 +68,30 @@ exports.get_channel = (req, res, next) => {
                 //     msg.populate("user");
                 // });
 
-                results.channel.messages.forEach(async msg => {
-                    msg.user = await User.findById(msg.user);
-                    console.log(msg.user);
-                });
+                // results.channel.messages.forEach(async msg => {
+                //     msg.user2 = await User.findById(msg.user);
+                //     a = await User.findById(msg.user);
+                //     console.log(msg.user2);
+                //     console.log(msg.user2.username);
+                //     // console.log(a.username);
+                //     // msg.user.username = a;
+                // });
                     
                 // let author = await User.findById(results.channel.messages[0].user);
                 // console.log(author);
-                console.log(results.channel.messages[0]);
-                console.log(results.channel.messages[0].user);
+                console.log(results.channel);
+                console.log("SDLFKJ" + results.channel.messages[0]);
+                // console.log("results channel message[0]  " + results.channel.messages[0].user.username);
             }
             
-            res.render("channel-page", {server: results.server, channel: results.channel});
+            res.render("channel-page", {server: results.server, channel: results.channel, username: a});
         }
     )
 };
         
 // https://mongoosejs.com/docs/populate.html
+// https://stackoverflow.com/questions/18867628/mongoose-deep-population-populate-a-populated-field
+
 /*
 exports.ability_detail_get = function (req, res, next) {
     async.parallel(
