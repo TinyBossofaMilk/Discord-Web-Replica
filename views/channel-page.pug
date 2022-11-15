@@ -6,8 +6,7 @@ block content
     
     each message in channel.messages
         .message #{message.text}
-        //- .user Username #{message.user.username}
-        //- .user Username: #{message.user}
+        .user Username:  #{message.user.username}
         .date #{message.date}
         .upvote #{message.upvote.length}
 

@@ -30,7 +30,7 @@ exports.post_message = [
                 {safe: true, upsert: true},
                 function (err, channelInstance){
                     if (err) { return next(err); }
-                    res.redirect("/create-server");
+                    res.redirect(`/server/${req.params.serverId}/channel/${req.params.channelId}`);
                 }
             )}
         );
