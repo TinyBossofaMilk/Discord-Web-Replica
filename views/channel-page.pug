@@ -2,20 +2,22 @@ extends layout
 
 block content
     include channel-side-bar
-    //- div.title #{channel.name}
-    
-    each message in channel.messages
-        .message #{message.text}
-        .user Username:  #{message.user.username}
-        .date #{message.date}
-        .upvote #{message.upvote.length}
+    .channel-content
+        //- div.title #{channel.name}
+        
+        each message in channel.messages
+            .message
+                .text #{message.text}
+                .user #{message.user.username}
+                .date #{message.date}
+                .upvote #{message.upvote.length}
 
-    else 
-        div No messages! Be the first to add one!
+        else 
+            div No messages! Be the first to add one!
 
-    form.add-message(method="POST" action="") 
-        div.form-group
-            label(for="msg") Message
-            input#msg(name="msg" placeholder="Add a message here!" type="text")
+        form.add-message(method="POST" action="") 
+            div.form-group
+                label(for="msg") Message
+                input#msg(name="msg" placeholder="Add a message here!" type="text")
 
-            button(type="submit") Submit
+                button(type="submit") Submit

@@ -14,7 +14,9 @@ exports.get_channel = (req, res, next) => {
     
     async.parallel({
         server(callback) {
-            Server.findById(req.params.serverId).exec(callback);
+            Server.findById(req.params.serverId)
+                .populate("channels")
+                .exec(callback);
         },
         channel(callback) { 
             Channel.findById(req.params.channelId)
@@ -23,14 +25,14 @@ exports.get_channel = (req, res, next) => {
                 model: Message,
                 populate: {
                     path: "user", 
-                    model: "user"
+                    model: User
                 }
             },
         ])
             .exec(callback)
         },
     },
-        async (err, results) => {
+        (err, results) => {
             if(err) next(err);
 
             // find selected channel
@@ -38,9 +40,8 @@ exports.get_channel = (req, res, next) => {
                 return c._id.toString() === req.params.channelId;
             });
             
-            let a;
             if(selectedChannel === undefined) {results.channel = null;}
-            
+            console.log(results.server)
             res.render("channel-page", {server: results.server, channel: results.channel});
         }
     )

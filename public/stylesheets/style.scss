@@ -2,6 +2,8 @@
 $bgcolor: lightblue;
 $textcolor: darkblue;
 $fontsize: 18px;
+$subtextsize: $fontsize - 10px;
+$standardpadding: 3px;
 
 /* Use the variables */
 body {
@@ -10,3 +12,23 @@ body {
   font-size: $fontsize;
 }
 
+.container {
+  display: flex;
+
+  nav.navbar {
+    padding: $standardpadding
+  } 
+  
+  .secondary-side-bar {
+    padding: $standardpadding
+  }
+  
+  .channel-content {
+    padding: $standardpadding;
+    
+    .message {
+      padding: $standardpadding
+      
+    }
+  }
+}
