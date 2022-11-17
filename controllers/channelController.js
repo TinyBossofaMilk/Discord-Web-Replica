@@ -42,7 +42,8 @@ exports.get_channel = (req, res, next) => {
             
             if(selectedChannel === undefined) {results.channel = null;}
             console.log(results.server)
-            res.render("channel-page", {server: results.server, channel: results.channel});
+            console.log(res.locals.currentUser)
+            res.render("channel-page", {server: results.server, channel: results.channel, user: res.locals.currentUser});
         }
     )
 };

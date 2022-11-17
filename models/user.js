@@ -7,7 +7,8 @@ let userSchema = new Schema({
     password: {type: String},
     userID: {type: String},
     friends: [{type: Schema.ObjectId, ref:"user"}],
-    friendReqs: [{type: Schema.ObjectId, ref:"user"}]
+    friendReqs: [{type: Schema.ObjectId, ref:"user"}],
+    serverLayout: [{type: Schema.Types.Mixed}]
 });
 
 module.exports = mongoose.model("user", userSchema);

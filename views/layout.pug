@@ -8,15 +8,16 @@ html
     div.container
       nav.navbar 
         //- add friends DM list
+
+        each server in user.serverLayout
+          a(href=server.url) #{server.name}
+          br
         //- add channels
 
         if (!user)
           nav.secondary-bar
         
         a(href="/create-server") Create Server
-        //- p.username-layout User: #{user.username} 
+        p.username-layout User: #{user.username} 
       
-      //- include secondary-side-bar
-
-
       block content

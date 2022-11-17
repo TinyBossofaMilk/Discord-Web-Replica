@@ -5,7 +5,7 @@ const {body, validationResult} = require("express-validator");
 const Server = require("../models/server");
 const Channel = require("../models/channel");
 
-exports.get_create_server = (req, res) => {res.render("server-form");};
+exports.get_create_server = (req, res) => {res.render("server-form", {user: res.locals.currentUser});};
 
 exports.post_create_server = [
     body("name").trim().isLength({min:1}).escape(),
@@ -16,6 +16,8 @@ exports.post_create_server = [
             res.render("error", {errors: errors.array(),})
             return;
         };
+//NEED TO ADD SERVER TO THE USER'S SERVERLAYOUT
+
         const generalChannel = new Channel({
             name: "General",
             privacy: "public"

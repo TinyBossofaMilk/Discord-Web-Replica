@@ -16,6 +16,7 @@ var helmet = require('helmet');
 var app = express();
 
 const User = require('./models/user')
+const Server = require('./models/server')
 const indexRouter = require('./routes/index');
 
 // view engine setup
@@ -72,10 +73,14 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 // Access the user object from anywhere in our application
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
+app.use(async (req, res, next) => {
+  if(req.user){
+    res.locals.currentUser = req.user;
+    res.locals.currentUser = await User.findById(req.user._id).populate({path: 'serverLayout', model: Server});
+  }
   next();
 });
+
 
 //////end of passport stuff
 
