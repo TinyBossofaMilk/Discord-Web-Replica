@@ -4,6 +4,7 @@ const {body, validationResult} = require("express-validator");
 
 const Server = require("../models/server");
 const Channel = require("../models/channel");
+const User = require("../models/user");
 
 exports.get_create_server = (req, res) => {res.render("server-form", {user: res.locals.currentUser});};
 
@@ -16,7 +17,7 @@ exports.post_create_server = [
             res.render("error", {errors: errors.array(),})
             return;
         };
-//NEED TO ADD SERVER TO THE USER'S SERVERLAYOUT
+
 
         const generalChannel = new Channel({
             name: "General",
@@ -31,11 +32,23 @@ exports.post_create_server = [
                 privacy: "public",
                 layout: []
             });
-            newServer.save(err => err ? next(err) : res.redirect(newServer.url));
+            newServer.save((err) => {
+                if(err) return next(err);
+                
+                User.findByIdAndUpdate(res.locals.currentUser._id, 
+                    {$push: {"serverLayout":newServer._id}}, 
+                    {safe: true, upsert: true},
+                    function (err, user) {
+                        if(err) return next(err);
+                        res.redirect(newServer.url)
+                })
+            });
         })
         
     }
 ];
+
+
 
 exports.get_delete_server = (req, res, next) => {
 
@@ -49,12 +62,14 @@ exports.delete_member = (req, res, next) => {};
 
 exports.add_banned_member =  (req, res, next) => {};
 
+exports.delete_banned_member =  (req, res, next) => {};
+
 exports.add_channel = (req, res, next) => {};
 
 exports.get_server = (req, res, next) => {
     Server.findById(req.params.id).populate("channels").exec((err, server) => {
         if(err) next(err);
 
-        res.render("server-page", {server: server})
+        res.render("server-page", {server: server, user: res.locals.currentUser})
     })
 };
