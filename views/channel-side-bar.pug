@@ -4,3 +4,4 @@ div.secondary-side-bar
     div This is the channel side bar
     for channel in server.channels
         a(href=`/server/${server._id}/channel/${channel._id}`) #{channel.name}
+    button.add-channel(type="button" onclick=() => showPopup) +

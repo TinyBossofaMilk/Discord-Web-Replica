@@ -21,7 +21,7 @@ router.get("/log-in", userController.log_in_get);
 
 router.post("/log-in", userController.log_in_post);
 
-// router.get("/log-out", userController.log_out_get);
+router.get("/log-out", userController.log_out_get);
 
 // router.get("/membership-form", userController.membership_get);
 
@@ -49,7 +49,7 @@ router.get("/server/:id", serverController.get_server);
 
 router.get('/server/:serverId/channel/:channelId', channelController.get_channel);
 
-// router.get('/channels', channelController.get_channels);
+router.get('/server/:serverId/create-channel', channelController.get_channel);
 
 
 

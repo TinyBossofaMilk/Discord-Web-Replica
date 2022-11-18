@@ -40,13 +40,47 @@ exports.get_channel = (req, res, next) => {
                 return c._id.toString() === req.params.channelId;
             });
             
+            //if the server doesn't have the channel, null it.
             if(selectedChannel === undefined) {results.channel = null;}
-            console.log(results.server)
-            console.log(res.locals.currentUser)
-            res.render("channel-page", {server: results.server, channel: results.channel, user: res.locals.currentUser});
+
+            const showPopup = (e) => {
+                let c = document.querySelector("form.container-popup#add-channel")
+                c.hidden = false;
+
+                // addEventListener()
+                console.log(c)
+            }
+            // console.log(showPopup())
+            let createChannelURL = `/server/${req.params.serverId}/create-channel`;
+            
+            res.render("channel-page", {server: results.server, 
+                channel: results.channel,
+                createChannelURL: createChannelURL, 
+                showPopup: this.showPopup,
+                user: res.locals.currentUser});
         }
     )
 };
         
 // https://mongoosejs.com/docs/populate.html
 // https://stackoverflow.com/questions/18867628/mongoose-deep-population-populate-a-populated-field
+
+exports.post_create_channel = [
+    body("name").trim().isLength({min:1}).withMessage("Name must not be empty"),
+    (req, res, next) => {
+        console.log("weklrj")
+        const newChannel = new Channel ({
+            name: res.body.name,
+            privacy: res.body.privacy.checked,
+        }).save((err, newChannel)=> {
+            Server.findByIdAndUpdate(req.params.channelId, 
+                {$push: {"channels": newChannel}}),
+                {safe: true, upsert: true},
+                (err, serverInstance) => {
+                    if (err) { return next(err); }
+                    res.redirect(newChannel.url);
+                }
+            }
+        )
+    }
+];

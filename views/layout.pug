@@ -12,12 +12,13 @@ html
         each server in user.serverLayout
           a(href=server.url) #{server.name}
           br
-        //- add channels
+
 
         if (!user)
           nav.secondary-bar
         
         a(href="/create-server") Create Server
         p.username-layout User: #{user.username} 
+        a(href="/log-out") Log out 
       
       block content

@@ -15,6 +15,18 @@ block content
         else 
             div No messages! Be the first to add one!
 
+        form.container-popup#add-channel(method="POST" action=createChannelURL)
+            .div Create Channel
+            label(for="name") Channel Name
+            input(type="text" name="name" placeholder="Enter channel name here...")
+            label(for="privacy") Private Channel?
+            input(type="checkbox" name="privacy")
+
+            button(type="submit") Submit
+
+
+
+
         form.add-message(method="POST" action="") 
             div.form-group
                 label(for="msg") Message
