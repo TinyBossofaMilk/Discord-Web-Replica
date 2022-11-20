@@ -49,7 +49,7 @@ router.get("/server/:id", serverController.get_server);
 
 router.get('/server/:serverId/channel/:channelId', channelController.get_channel);
 
-router.get('/server/:serverId/create-channel', channelController.get_channel);
+router.post('/server/:serverId/create-channel', channelController.post_create_channel);
 
 
 

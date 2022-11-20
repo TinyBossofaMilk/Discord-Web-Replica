@@ -11,7 +11,7 @@ var serverSchema = new Schema({
   layout: []
 });
 
-// Virtual for this bookinstance object's URL.
+// Virtual for this server's object's URL.
 serverSchema
 .virtual('url')
 .get(function () {

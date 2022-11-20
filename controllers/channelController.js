@@ -66,21 +66,27 @@ exports.get_channel = (req, res, next) => {
 // https://stackoverflow.com/questions/18867628/mongoose-deep-population-populate-a-populated-field
 
 exports.post_create_channel = [
-    body("name").trim().isLength({min:1}).withMessage("Name must not be empty"),
+    body("name").trim().isLength({min:1}).withMessage("Name must not be empty").escape(),
+    body("genre").escape(),
     (req, res, next) => {
-        console.log("weklrj")
+        // console.log("checkbox here")
+        // console.log(req.body.private)
+        // console.log(req.body.private.value)
+        console.log(req.body.private.value)
+        //TODO: FIX PRIVATE BODY FUNCTION, IT'S NOT BEING PROCESSED CORRECTLY
         const newChannel = new Channel ({
-            name: res.body.name,
-            privacy: res.body.privacy.checked,
+            name: req.body.name,
+            private: req.body.private,
         }).save((err, newChannel)=> {
-            Server.findByIdAndUpdate(req.params.channelId, 
-                {$push: {"channels": newChannel}}),
+            Server.findByIdAndUpdate(req.params.serverId, 
+                {$push: {"channels": newChannel}},
                 {safe: true, upsert: true},
-                (err, serverInstance) => {
+                function (err, serverInstance) {
+                    console.log(newChannel)
                     if (err) { return next(err); }
-                    res.redirect(newChannel.url);
+                    res.redirect(`/server/${req.params.serverId}/channel/${newChannel._id}`);
                 }
-            }
-        )
+            )
+        })
     }
 ];
