@@ -6,8 +6,10 @@ let userSchema = new Schema({
     email: {type: String},
     password: {type: String},
     userID: {type: String},
+    // birthday: {type: Date},
     friends: [{type: Schema.ObjectId, ref:"user"}],
     friendReqs: [{type: Schema.ObjectId, ref:"user"}],
+    blockedFriends: [{type: Schema.ObjectId, ref:"user"}],
     serverLayout: [{type: Schema.Types.Mixed}]
 });
 

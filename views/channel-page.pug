@@ -3,8 +3,6 @@ extends layout
 block content
     include channel-side-bar
     .channel-content
-        //- div.title #{channel.name}
-        
         each message in channel.messages
             .message
                 .text #{message.text}

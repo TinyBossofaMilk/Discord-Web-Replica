@@ -27,8 +27,7 @@ exports.get_channel = (req, res, next) => {
                     path: "user", 
                     model: User
                 }
-            },
-        ])
+            }])
             .exec(callback)
         },
     },

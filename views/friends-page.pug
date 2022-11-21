@@ -1,0 +1,16 @@
+extends layout
+
+block content 
+    include dm-side-bar
+
+    nav#friends-management
+        a(href='/friends') All
+        a(href='/friends/blocked') Blocked
+        a(href='/friends/pending') Pending 
+        a(href='/friends/send-request') Add Friend
+    
+    br
+
+    div FRIENDS PAGE YO
+    //- for friend in friends_list
+        //- div #{friend.username}

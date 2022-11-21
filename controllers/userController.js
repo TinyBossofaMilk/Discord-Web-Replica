@@ -75,11 +75,59 @@ exports.log_out_get = (req, res, next) => {
   });
 };
 
-exports.send_friend_req = (req, res) => {
 
+/* FRIENDS ********************************************************/
+
+exports.friends_redirect = (req, res) => { res.redirect("/friends/all")};
+
+exports.get_all_friends = (req, res) => {
+  User.findById(res.locals.currentUser._id)
+    .populate({path: 'friends', model: User})
+    // .select('friends')
+    .exec((err, friends_list) => {
+      res.render("friends-page", {friends_list: friends_list, user: res.locals.currentUser});      
+    })
 };
 
-exports.accept_friend_req = (req, res) => {
+exports.get_pending_friend_reqs = (req, res) => {
+  User.findById(res.locals.currentUser._id)
+    .select('friendReqs')
+    .populate({path: 'friendReqs', model: User})
+    .exec((err, friends_list) => {
+      console.log(friends_list)
+      res.render("friends-page", {friends_list: friends_list, user: res.locals.currentUser});      
+    });
+};
+
+exports.get_blocked_friends = (req, res) => {
+  User.findById(res.locals.currentUser._id, 'blockedFriends')
+    // .populate("user")
+    // .select('blockedFriends')
+    .exec((err, friends_list) => {
+      res.render("friends-page", {friends_list: friends_list, user: res.locals.currentUser});      
+    });
+};
+
+exports.get_friend_req_form = (req, res) => {
+  res.render("friend-req-form", {user: res.locals.currentUser});
+};
+
+exports.post_friend_req_form = [
+  // body("username").escape(),
+  // body("userID").isLength({min:4, max:4}).escape(),
+  (req, res, next) => {
+    User.findOneAndUpdate({username: req.body.username, userID: req.body.userID},
+      {$push: {"friendReqs": res.locals.currentUser._id}}, 
+      {safe: true, upsert: true},
+      function (err, user) {
+          if(err) return next(err);
+          res.redirect("/friends");
+      }
+    )
+  }
+];
+
+exports.post_accept_friend_req = (req, res) => {
 
 };
 

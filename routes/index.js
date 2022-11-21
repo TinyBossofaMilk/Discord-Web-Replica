@@ -6,12 +6,15 @@ const userController = require("../controllers/userController");
 const serverController = require("../controllers/serverController");
 const messageController = require("../controllers/messageController");
 const channelController = require("../controllers/channelController");
-
+const dmController = require("../controllers/directMessageController")
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('home');
 });
+
+
+/*USER********************************************************** */
 
 router.get("/sign-up", userController.sign_up_get);
 
@@ -23,17 +26,24 @@ router.post("/log-in", userController.log_in_post);
 
 router.get("/log-out", userController.log_out_get);
 
-// router.get("/membership-form", userController.membership_get);
+router.get("/friends", userController.friends_redirect);
 
-// router.post("/membership-form", userController.membership_post);
+router.get("/friends/all", userController.get_all_friends);
 
-// router.get("/messages", messageController.messages_get)
+router.get("/friends/blocked", userController.get_blocked_friends);
 
-// router.get("/message-form", messageController.message_form_get)
+router.get("/friends/pending", userController.get_pending_friend_reqs);
 
-// router.post("/message-form", messageController.message_form_post)
+router.get("/friends/send-request", userController.get_friend_req_form);
 
-// router.post("/messages", messageController.message_delete_post);
+router.post("/friends/send-request", userController.post_friend_req_form);
+
+
+/*DIRECT MESSAGES ********************************************************** */
+
+router.get('/direct-messages/friends', userController.get_all_friends);
+
+// router.get('/direct-messages/:conversationId',);
 
 
 /*SERVER********************************************************** */
