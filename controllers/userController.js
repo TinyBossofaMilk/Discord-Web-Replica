@@ -111,7 +111,7 @@ exports.get_send_friend_req_form = (req, res) => {
   res.render("friend-req-form", {user: res.locals.currentUser});
 };
 
-exports.post_send_friend_req_form = [
+exports.post_friend_req_form = [
   // body("username").escape(),
   // body("userID").isLength({min:4, max:4}).escape(),
   (req, res, next) => {
@@ -126,8 +126,8 @@ exports.post_send_friend_req_form = [
   }
 ];
 
-exports.post_accept_friend_req = (req, res) => {
-
+exports.post_accept_friend_req = (req, res, next) => {
+  User.findByIdAndUpdate(res.locals.currentUser._id)
 };
 
 exports.getHashedPasswordFor = async password => {
