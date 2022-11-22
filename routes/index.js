@@ -34,9 +34,9 @@ router.get("/friends/blocked", userController.get_blocked_friends);
 
 router.get("/friends/pending", userController.get_pending_friend_reqs);
 
-router.get("/friends/send-request", userController.get_friend_req_form);
+router.get("/friends/send-request", userController.get_send_friend_req_form);
 
-router.post("/friends/send-request", userController.post_friend_req_form);
+router.post("/friends/send-request", userController.post_send_friend_req_form);
 
 
 /*DIRECT MESSAGES ********************************************************** */

@@ -12,5 +12,9 @@ block content
     br
 
     div FRIENDS PAGE YO
-    //- for friend in friends_list
-        //- div #{friend.username}
+    for friend in friends_list
+        form(method="post" action="/accept-friend-req")
+            div #{friend.username}
+            input(type="text" value=friend._id hidden= true)
+            button(type="submit" name="accept") Accept
+            button(type="submit" name="decline") Decline

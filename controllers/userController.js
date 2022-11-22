@@ -93,26 +93,25 @@ exports.get_pending_friend_reqs = (req, res) => {
   User.findById(res.locals.currentUser._id)
     .select('friendReqs')
     .populate({path: 'friendReqs', model: User})
-    .exec((err, friends_list) => {
-      console.log(friends_list)
-      res.render("friends-page", {friends_list: friends_list, user: res.locals.currentUser});      
+    .exec((err, user) => {
+      res.render("friends-page", {friends_list: user.friendReqs, user: res.locals.currentUser});      
     });
 };
 
 exports.get_blocked_friends = (req, res) => {
-  User.findById(res.locals.currentUser._id, 'blockedFriends')
-    // .populate("user")
-    // .select('blockedFriends')
-    .exec((err, friends_list) => {
-      res.render("friends-page", {friends_list: friends_list, user: res.locals.currentUser});      
+  User.findById(res.locals.currentUser._id)
+    .select('blockedFriends')
+    .populate({path: 'blockedFriends', model: User})
+    .exec((err, user) => {
+      res.render("friends-page", {friends_list: user.blockedFriends, user: res.locals.currentUser});      
     });
 };
 
-exports.get_friend_req_form = (req, res) => {
+exports.get_send_friend_req_form = (req, res) => {
   res.render("friend-req-form", {user: res.locals.currentUser});
 };
 
-exports.post_friend_req_form = [
+exports.post_send_friend_req_form = [
   // body("username").escape(),
   // body("userID").isLength({min:4, max:4}).escape(),
   (req, res, next) => {
