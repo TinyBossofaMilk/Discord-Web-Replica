@@ -26,13 +26,20 @@ router.post("/log-in", userController.log_in_post);
 
 router.get("/log-out", userController.log_out_get);
 
+
+/* FRIENDS ********************************************/
+
 router.get("/friends", userController.friends_redirect);
 
 router.get("/friends/all", userController.get_all_friends);
 
-router.get("/friends/blocked", userController.get_blocked_friends);
-
 router.get("/friends/pending", userController.get_pending_friend_reqs);
+
+router.post("/friends/accept-friend-req", userController.post_accept_friend_req);
+
+router.post("/friends/reject-friend-req", userController.post_decline_friend_req);
+
+router.get("/friends/blocked", userController.get_blocked_friends);
 
 router.get("/friends/send-request", userController.get_send_friend_req_form);
 

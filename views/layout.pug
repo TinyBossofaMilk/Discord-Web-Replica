@@ -9,12 +9,10 @@ html
       nav.navbar 
         a(href="/direct-messages/friends") Direct Messages
         br
-        //- add friends DM list
 
         each server in user.serverLayout
           a(href=server.url) #{server.name}
           br
-
 
         if (!user)
           nav.secondary-bar

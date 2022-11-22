@@ -3,6 +3,7 @@ var router = express.Router();
 const {body, validationResult} = require("express-validator");
 var bcrypt = require("bcryptjs");
 const passport = require("passport")
+const async = require("async");
 
 const User = require("../models/user");
 
@@ -83,9 +84,9 @@ exports.friends_redirect = (req, res) => { res.redirect("/friends/all")};
 exports.get_all_friends = (req, res) => {
   User.findById(res.locals.currentUser._id)
     .populate({path: 'friends', model: User})
-    // .select('friends')
-    .exec((err, friends_list) => {
-      res.render("friends-page", {friends_list: friends_list, user: res.locals.currentUser});      
+    .select('friends')
+    .exec((err, user) => {
+      res.render("friends-page", {friends_list: user.friends, user: res.locals.currentUser});      
     })
 };
 
@@ -94,7 +95,7 @@ exports.get_pending_friend_reqs = (req, res) => {
     .select('friendReqs')
     .populate({path: 'friendReqs', model: User})
     .exec((err, user) => {
-      res.render("friends-page", {friends_list: user.friendReqs, user: res.locals.currentUser});      
+      res.render("friend-pending-req", {friends_list: user.friendReqs, user: res.locals.currentUser});      
     });
 };
 
@@ -107,9 +108,7 @@ exports.get_blocked_friends = (req, res) => {
     });
 };
 
-exports.get_send_friend_req_form = (req, res) => {
-  res.render("friend-req-form", {user: res.locals.currentUser});
-};
+exports.get_send_friend_req_form = (req, res) => { res.render("friend-req-form", {user: res.locals.currentUser});};
 
 exports.post_friend_req_form = [
   // body("username").escape(),
@@ -122,12 +121,33 @@ exports.post_friend_req_form = [
           if(err) return next(err);
           res.redirect("/friends");
       }
-    )
-  }
-];
+      )
+    }
+  ];
 
 exports.post_accept_friend_req = (req, res, next) => {
-  User.findByIdAndUpdate(res.locals.currentUser._id)
+  async.parallel[
+
+  ]
+  User.findByIdAndUpdate(res.locals.currentUser._id, 
+    {$push: {"friends": req.body.userID}}, 
+    {safe: true, upsert: true},
+    function (err, user) {
+        if(err) return next(err);
+        res.redirect("/friends");
+    }
+  )
+};
+
+exports.post_decline_friend_req = (req, res, next) => {
+  User.findByIdAndUpdate(res.locals.currentUser._id, 
+    {$pullAll: {"friendsReq": res.body.userID}}, 
+    {safe: true, upsert: true},
+    function (err, user) {
+        if(err) return next(err);
+        res.redirect("/friends");
+    }
+  )
 };
 
 exports.getHashedPasswordFor = async password => {
