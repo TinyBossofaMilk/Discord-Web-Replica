@@ -39,7 +39,13 @@ router.post("/friends/accept-friend-req", userController.post_accept_friend_req)
 
 router.post("/friends/reject-friend-req", userController.post_reject_friend_req);
 
+router.post("/friends/remove-friend", userController.post_remove_friend);
+
 router.get("/friends/blocked", userController.get_blocked_friends);
+
+router.post("/friends/block-friend", userController.post_block_friend);
+
+router.post("/friends/unblock-friend", userController.post_unblock_friend);
 
 router.get("/friends/send-request", userController.get_send_friend_req_form);
 

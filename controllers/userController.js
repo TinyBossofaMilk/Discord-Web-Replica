@@ -99,15 +99,6 @@ exports.get_pending_friend_reqs = (req, res) => {
     });
 };
 
-exports.get_blocked_friends = (req, res) => {
-  User.findById(res.locals.currentUser._id)
-    .select('blockedFriends')
-    .populate({path: 'blockedFriends', model: User})
-    .exec((err, user) => {
-      res.render("friends-page", {friends_list: user.blockedFriends, user: res.locals.currentUser});      
-    });
-};
-
 exports.get_send_friend_req_form = (req, res) => { res.render("friend-req-form", {user: res.locals.currentUser});};
 
 exports.post_friend_req_form = [
@@ -150,24 +141,81 @@ exports.post_accept_friend_req = (req, res, next) => {
     }
   }, function(err, results) {
     if (err) { return next(err); }
-    return res.redirect('/friends/pending');
+    return res.redirect('/friends');
   })
 };
 
+exports.post_remove_friend = (req, res, next) => {
+  async.parallel({
+    updateUser: function (callback) {
+      User.findByIdAndUpdate(res.locals.currentUser._id, 
+        {$pull: {"friends": req.body.userID}}, 
+        {safe: true, upsert: true},
+        function (err, user) {
+          if(err) return callback(err);
+          callback(null, user);
+        }
+      )
+    },
+    updateSender: function (callback) {
+      User.findByIdAndUpdate(req.body.userID, 
+        {$pull: {"friends": res.locals.currentUser._id}}, 
+        {safe: true, upsert: true},
+        function (err, user) {
+          if(err) return next(err);
+          callback(null, user);
+        }
+      )
+    }
+  }, function(err, results) {
+    if (err) { return next(err); }
+
+    return res.redirect('/friends');
+  })
+}
 
 exports.post_reject_friend_req = (req, res, next) => {
-  console.log(res.locals.currentUser._id)
-  console.log(req.body.userID)
   User.findByIdAndUpdate(res.locals.currentUser._id, 
     {$pull: {"friendReqs": req.body.userID}}, 
     {safe: true, upsert: true},
     function (err, user) {
         if(err) return next(err);
-        console.log("Here");
         res.redirect("/friends/pending");
     }
-  )
+  );
 };
+
+exports.get_blocked_friends = (req, res) => {
+  User.findById(res.locals.currentUser._id)
+    .select('blockedFriends')
+    .populate({path: 'blockedFriends', model: User})
+    .exec((err, user) => {
+      res.render("friends-blocked", {friends_list: user.blockedFriends, user: res.locals.currentUser});      
+    });
+};
+
+exports.post_block_friend = (req, res, next) => {
+  User.findByIdAndUpdate(res.locals.currentUser._id, 
+    {$push: {"blockedFriends": req.body.userID}}, 
+    {safe: true, upsert: true},
+    function (err, user) {
+        if(err) return next(err);
+        console.log("blocked?")
+        res.redirect("/friends/blocked");
+    }
+  );
+};
+
+exports.post_unblock_friend = (req, res, next) => {
+  User.findByIdAndUpdate(res.locals.currentUser._id, 
+    {$pull: {"blockedFriends": req.body.userID}}, 
+    {safe: true, upsert: true},
+    function (err, user) {
+        if(err) return next(err);
+        res.redirect("/friends/blocked");
+    }
+  );
+}
 
 exports.getHashedPasswordFor = async password => {
   const result = await bcrypt.hash(password, 10)

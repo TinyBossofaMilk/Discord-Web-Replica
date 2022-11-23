@@ -10,10 +10,7 @@ add admin privileges
     create permissions for channel access for mod ruoles
 
 USER
-FRIENDS
-    if sending friend req, shows if the friend does not exist
-    if friend req already sent, do not send another req
-    cannot send friend req if blocked
+
 
 
 CHANNEL
@@ -31,3 +28,11 @@ DIRECT MESSAGES + GROUPS!!!
         users involved
         messages[]
    
+
+   
+ERROR HANDLING
+    user creation, check no duplicates
+FRIENDS
+    if sending friend req, shows if the friend does not exist
+    if friend req already sent, do not send another req
+    cannot send friend req if blocked

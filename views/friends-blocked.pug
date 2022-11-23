@@ -1,0 +1,16 @@
+extends layout
+
+block content 
+    include dm-side-bar
+    include friends-nav-bar
+    
+    br
+
+    each friend in friends_list
+        form(method="post" action="")
+            div #{friend.username}
+            input(type="text" name="userID" value=friend._id hidden= true)
+            button(type="submit" name="unblock" formaction="/friends/unblock-friend") Unblock
+
+    else 
+        div You have no enemies!

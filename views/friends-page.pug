@@ -7,12 +7,12 @@ block content
     br
 
     each friend in friends_list
-        div #{friend.username}
-        //- form(method="post" action="/accept-friend-req")
-        //-     div #{friend.username}
-        //-     input(type="text" value=friend._id hidden= true)
-        //-     button(type="submit" name="accept") Accept
-        //-     button(type="submit" name="decline") Decline
+        form(method="post" action="")
+            div #{friend.username}
+            input(type="text" name="userID" value=friend._id hidden=true)
+            button(type="submit" name="accept" formaction="/friends/remove-friend") Remove Friend
+            button(type="submit" name="decline" formaction="/friends/block-friend") Block
+        br
 
     else 
         div You have no friends!
