@@ -37,7 +37,7 @@ router.get("/friends/pending", userController.get_pending_friend_reqs);
 
 router.post("/friends/accept-friend-req", userController.post_accept_friend_req);
 
-router.post("/friends/reject-friend-req", userController.post_decline_friend_req);
+router.post("/friends/reject-friend-req", userController.post_reject_friend_req);
 
 router.get("/friends/blocked", userController.get_blocked_friends);
 

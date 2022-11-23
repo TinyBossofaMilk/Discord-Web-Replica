@@ -9,6 +9,6 @@ block content
     each friend in friends_list
         form(method="post" action="/accept-friend-req")
             div #{friend.username}
-            input(type="text" name: "userID" value=friend._id hidden= true)
-            button(type="submit" name="accept" formaction="/accept-friend-req") Accept
-            button(type="submit" name="decline" formaction="/decline-friend-req") Decline
+            input(type="text" name="userID" value=friend._id hidden= true)
+            button(type="submit" name="accept" formaction="/friends/accept-friend-req") Accept
+            button(type="submit" name="reject" formaction="/friends/reject-friend-req") Decline

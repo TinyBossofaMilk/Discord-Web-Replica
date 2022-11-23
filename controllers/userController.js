@@ -126,26 +126,54 @@ exports.post_friend_req_form = [
   ];
 
 exports.post_accept_friend_req = (req, res, next) => {
-  async.parallel[
-
-  ]
-  User.findByIdAndUpdate(res.locals.currentUser._id, 
-    {$push: {"friends": req.body.userID}}, 
-    {safe: true, upsert: true},
-    function (err, user) {
-        if(err) return next(err);
-        res.redirect("/friends");
+  async.parallel({
+    updateUser: () => {
+      User.findByIdAndUpdate(res.locals.currentUser._id, 
+        {$push: {"friends": req.body.userID}, $pull: {"friendReqs": req.body.userID}}, 
+        {safe: true, upsert: true},
+        function (err, user) {
+          if(err) return next(err);
+        }
+      )
+    },
+    updateSender: () => {
+      User.findByIdAndUpdate(req.body.userID, 
+        {$push: {"friends": res.locals.currentUser._id}}, 
+        {safe: true, upsert: true},
+        function (err, user) {
+          if(err) return next(err);
+        }
+      )
     }
-  )
+  }, function(err, results) {
+    if (err) { return next(err); }
+    // if (results.bookinstance==null) { // No results.
+    //     var err = new Error('Book copy not found');
+    //     err.status = 404;
+    //     return next(err);
+    // }
+    // Success.
+    res.redirect('/friends/pending');
+  })
 };
 
-exports.post_decline_friend_req = (req, res, next) => {
+
+/*  User.updateMany(query.or({_id: res.locals.currentUser._id}, {_id: req.body.userID})
+//     [
+//       {$push: }
+//     ]
+//  )
+*/
+exports.post_reject_friend_req = (req, res, next) => {
+  console.log(res.locals.currentUser._id)
+  console.log(req.body.userID)
   User.findByIdAndUpdate(res.locals.currentUser._id, 
-    {$pullAll: {"friendsReq": res.body.userID}}, 
+    {$pull: {"friendReqs": req.body.userID}}, 
     {safe: true, upsert: true},
     function (err, user) {
         if(err) return next(err);
-        res.redirect("/friends");
+        console.log("Here");
+        res.redirect("/friends/pending");
     }
   )
 };
