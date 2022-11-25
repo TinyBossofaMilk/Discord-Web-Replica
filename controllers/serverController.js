@@ -43,12 +43,9 @@ exports.post_create_server = [
                         res.redirect(newServer.url)
                 })
             });
-        })
-        
+        }) 
     }
 ];
-
-
 
 exports.get_delete_server = (req, res, next) => {
 

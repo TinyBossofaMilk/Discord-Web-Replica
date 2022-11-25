@@ -1,0 +1,11 @@
+extends layout
+
+block content 
+    include dm-side-bar
+    include friends-nav-bar
+    
+    //- .header 
+    //-     div @ #{friend.username}
+
+    each message in messages
+        div #{message.text}

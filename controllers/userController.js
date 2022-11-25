@@ -6,6 +6,7 @@ const passport = require("passport")
 const async = require("async");
 
 const User = require("../models/user");
+const DM = require('../models/directMessage');
 
 exports.sign_up_get = (req, res) => {
   //if already logged in, redirects you to the home.
@@ -65,7 +66,7 @@ exports.log_in_get = (req, res) => {
 }
 
 exports.log_in_post = passport.authenticate("local", {
-    successRedirect: "/server/636748fba74abce85b4d6d25/channel/636748fba74abce85b4d6d23",
+    successRedirect: "/direct-messages/friends",
     failureRedirect: "/log-in"
 });
 
@@ -79,14 +80,34 @@ exports.log_out_get = (req, res, next) => {
 
 /* FRIENDS ********************************************************/
 
-exports.friends_redirect = (req, res) => { res.redirect("/friends/all")};
+exports.friends_redirect = (req, res) => { res.redirect("/friends/all") };
 
 exports.get_all_friends = (req, res) => {
+
+  // just make a link to get the page with a template of the convo
+  //   if user clicks away, don't make a convo
+  //   if user sends a message, send a message to the convo. 
+  //     if the convo doesn't exists, create a new convo
+  //     if convo does exists, just push it to the existing convo
+  // ^ignore, just do a submit new convo in the pug page.
+
   User.findById(res.locals.currentUser._id)
     .populate({path: 'friends', model: User})
     .select('friends')
     .exec((err, user) => {
-      res.render("friends-page", {friends_list: user.friends, user: res.locals.currentUser});      
+      if(err) return next(err);
+      //Look for the associated chat with friend, and append url to friend obj
+      user.friends.forEach(friend => {
+        DM.findOne({
+          users: {$all: [res.locals.currentUser._id, friend._id],
+                  $size: 2}
+        })
+        .exec((err, dm) => {
+          if(err) return next(err);
+          friend.dm_url = dm.url;
+          res.render("friends-page", {friends_list: user.friends, user: res.locals.currentUser});
+        });
+      });
     })
 };
 
@@ -95,6 +116,7 @@ exports.get_pending_friend_reqs = (req, res) => {
     .select('friendReqs')
     .populate({path: 'friendReqs', model: User})
     .exec((err, user) => {
+      if(err) return next(err);
       res.render("friend-pending-req", {friends_list: user.friendReqs, user: res.locals.currentUser});      
     });
 };
@@ -112,9 +134,9 @@ exports.post_friend_req_form = [
           if(err) return next(err);
           res.redirect("/friends");
       }
-      )
-    }
-  ];
+    )
+  }
+];
 
 exports.post_accept_friend_req = (req, res, next) => {
   async.parallel({
@@ -124,7 +146,6 @@ exports.post_accept_friend_req = (req, res, next) => {
         {safe: true, upsert: true},
         function (err, user) {
           if(err) return callback(err);
-          console.log("1")
           callback(null, user);
         }
       )
@@ -169,7 +190,6 @@ exports.post_remove_friend = (req, res, next) => {
     }
   }, function(err, results) {
     if (err) { return next(err); }
-
     return res.redirect('/friends');
   })
 }

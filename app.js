@@ -18,6 +18,7 @@ var app = express();
 const User = require('./models/user')
 const Server = require('./models/server')
 const indexRouter = require('./routes/index');
+const DM = require('./models/directMessage');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -85,7 +86,11 @@ app.use(async (req, res, next) => {
 //////end of passport stuff
 
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+
+// TODO: INSERT MIDDLEWARE GETTING RECENT CONVOS? 
+// app.use('/direct-message', (req, res, next) => {
+//   DM.find({users: res.locals.currentUser}).exec(next())
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

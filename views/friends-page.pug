@@ -10,6 +10,9 @@ block content
         form(method="post" action="")
             div #{friend.username}
             input(type="text" name="userID" value=friend._id hidden=true)
+            a(href=friend.dm_url) Find chat link
+            //- button(type="button" name="accept" onclick={findDM}) Find chat button redir
+            //- button(type="submit" name="accept" formaction='/direct-messages/find-dm') Chat
             button(type="submit" name="accept" formaction="/friends/remove-friend") Remove Friend
             button(type="submit" name="decline" formaction="/friends/block-friend") Block
         br

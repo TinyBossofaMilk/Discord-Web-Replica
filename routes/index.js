@@ -6,7 +6,8 @@ const userController = require("../controllers/userController");
 const serverController = require("../controllers/serverController");
 const messageController = require("../controllers/messageController");
 const channelController = require("../controllers/channelController");
-const dmController = require("../controllers/directMessageController")
+const dmController = require("../controllers/directMessageController");
+const directMessage = require('../models/directMessage');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -56,7 +57,11 @@ router.post("/friends/send-request", userController.post_friend_req_form);
 
 router.get('/direct-messages/friends', userController.get_all_friends);
 
-// router.get('/direct-messages/:conversationId',);
+router.post('/direct-messages/create-conversation', dmController.post_create_conversation);
+
+router.get('/direct-messages/find-dm', dmController.find_dm);
+
+router.get('/direct-messages/:dmid', dmController.get_dm);
 
 
 /*SERVER********************************************************** */
