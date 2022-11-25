@@ -59,9 +59,11 @@ router.get('/direct-messages/friends', userController.get_all_friends);
 
 router.post('/direct-messages/create-conversation', dmController.post_create_conversation);
 
-router.get('/direct-messages/find-dm', dmController.find_dm);
+// router.get('/direct-messages/find-dm', dmController.find_dm);
 
-router.get('/direct-messages/:dmid', dmController.get_dm);
+router.get('/direct-messages/:id', dmController.get_dm);
+
+router.post('/direct-messages/:id', dmController.post_add_message);
 
 
 /*SERVER********************************************************** */

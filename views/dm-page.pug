@@ -1,0 +1,22 @@
+extends layout
+
+block content 
+    include dm-side-bar
+    //- div DM page
+    .header 
+        each user in dm.users
+            div @ #{user.username}
+
+    each message in dm.messages
+        div #{message.user.username}
+        div #{message.text}
+        div #{message.date}
+    else 
+        div No messages! Be the first to add one!
+
+    form.add-message(method="POST" action="") 
+        div.form-group
+            label(for="msg") Message
+            input#msg(name="msg" placeholder="Add a message here!" type="text")
+
+            button(type="submit") Submit
