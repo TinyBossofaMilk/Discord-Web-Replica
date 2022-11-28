@@ -55,6 +55,8 @@ router.post("/friends/send-request", userController.post_friend_req_form);
 
 /*DIRECT MESSAGES ********************************************************** */
 
+router.use('/direct-messages', dmController.dm_middleware);
+
 router.get('/direct-messages/friends', userController.get_all_friends);
 
 router.post('/direct-messages/create-conversation', dmController.post_create_conversation);
@@ -65,6 +67,7 @@ router.get('/direct-messages/:id', dmController.get_dm);
 
 router.post('/direct-messages/:id', dmController.post_add_message);
 
+router.delete('/direct-messages/:id', dmController.delete_message);
 
 /*SERVER********************************************************** */
 

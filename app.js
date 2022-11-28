@@ -17,8 +17,8 @@ var app = express();
 
 const User = require('./models/user')
 const Server = require('./models/server')
-const indexRouter = require('./routes/index');
 const DM = require('./models/directMessage');
+const indexRouter = require('./routes/index');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -88,9 +88,24 @@ app.use(async (req, res, next) => {
 app.use('/', indexRouter);
 
 // TODO: INSERT MIDDLEWARE GETTING RECENT CONVOS? 
-// app.use('/direct-message', (req, res, next) => {
-//   DM.find({users: res.locals.currentUser}).exec(next())
-// });
+app.use('/direct-messages', async (req, res, next) => {
+    console.log("recentDMs")
+    
+    res.locals.recentDMs = await DM.find({users: {$all: res.locals.currentUser._id}})
+    // .sort({"date": 1}) <-- check that syntax is correct!!!!!
+    .populate({
+        path: "users",
+        model: User
+    });
+
+    //if one convo, find returns an object, not an array. convert to array for dmsidebar page
+    if(Array.isArray(res.locals.recentDMs)){
+        res.locals.recentDMs = [res.locals.recentDMs];
+    }
+    console.log("recentDMs = in middleware " + res.locals.recentDMs)
+
+    next();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

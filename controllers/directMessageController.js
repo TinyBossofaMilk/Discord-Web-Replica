@@ -6,21 +6,29 @@ const DM = require("../models/directMessage");
 const Message = require("../models/message");
 const User = require("../models/user");
 
+// TODO: INSERT MIDDLEWARE GETTING RECENT CONVOS? 
+exports.dm_middleware = (async (req, res, next) => {
+    res.locals.recentDMs = await DM.find({users: {$all: res.locals.currentUser._id}})
+    // .sort({"date": 1}) <-- check that syntax is correct!!!!!
+    .populate({
+        path: "users",
+        model: User
+    });
+
+    //if one convo, find returns an object, not an array. convert to array for dmsidebar page
+    if(!Array.isArray(res.locals.recentDMs)){
+        res.locals.recentDMs = [res.locals.recentDMs];
+    }
+    // console.log("recentDMs = in middleware " + res.locals.recentDMs)
+
+    next();
+});
 
 exports.get_dm = (req, res, next) => {
-    console.log(req.params.id)
     DM.findById(req.params.id)
     .populate([{
         path:'users',
         model: User,
-        // populate: {
-        //     path: "messages",
-        //     model: Message,
-        //     populate: {
-        //         path: "user",
-        //         model: User
-        //     }
-        // }
     },
     {
         path: "messages",
@@ -31,8 +39,12 @@ exports.get_dm = (req, res, next) => {
         }
     }])
     .exec((err, dm) => {
-        console.log(dm)
-        res.render(`dm-page`, {dm: dm, user: res.locals.currentUser});
+        // console.log("recentDMs = " + res.locals.recentDMs)
+
+        res.render(`dm-page`, {dm: dm, 
+            user: res.locals.currentUser, 
+            recent_dms: res.locals.recentDMs
+        });
     });
 }
 
@@ -53,6 +65,8 @@ exports.post_add_message = [
             text: req.body.msg,
             date: Date.now()
         }).save((err, message) => {
+            if(err) next(err);
+
             DM.findByIdAndUpdate(req.params.id,
                 {$push: {"messages": message}},
                 {safe: true, upsert: true},
@@ -64,6 +78,12 @@ exports.post_add_message = [
     }
 ];
 
+exports.delete_message = (req, res, next) => {
+    Message.findByIdAndDelete(req.body.msgid)
+        .exec((err, msg) => {
+            if(err) next(err);
+        })
+};
 
 /* Prob won't be used
 exports.find_dm = (req, res, next) => {

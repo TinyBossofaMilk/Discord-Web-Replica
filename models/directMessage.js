@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 
 var directMessageSchema = new Schema({
     users: [{type: Schema.ObjectId, ref:"User"}],
-    messages: [{type: Schema.ObjectId, ref: "Message"}]
+    messages: [{type: Schema.ObjectId, ref: "Message"}],
+    lastUpdated: {type: Date}
 });
 
 // Virtual for this direct messsage's object's URL.

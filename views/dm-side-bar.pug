@@ -1,7 +1,8 @@
 div.secondary-side-bar
     a(href='/direct-messages/friends') Friends
-    div This is the DM side bar
-    //- for friend in user.friends
-        //- a(href=`/direct-message/${direct.message}`) #{channel.name}
-        //- br
-        //- div friend
+    each dm in recent_dms
+        a(href=dm.url)  
+
+            each dmUser in dm.users
+                if(dmUser.username !=  user.username)
+                    span @#{dmUser.username}

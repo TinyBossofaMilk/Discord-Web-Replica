@@ -105,7 +105,14 @@ exports.get_all_friends = (req, res) => {
         .exec((err, dm) => {
           if(err) return next(err);
           friend.dm_url = dm.url;
-          res.render("friends-page", {friends_list: user.friends, user: res.locals.currentUser});
+
+          console.log("current User " + res.locals.currentUser)
+          console.log("users " + user.friends)
+          res.render("friends-page", {
+            friends_list: user.friends, 
+            user: res.locals.currentUser,
+            recent_dms: res.locals.recentDMs
+          });
         });
       });
     })
