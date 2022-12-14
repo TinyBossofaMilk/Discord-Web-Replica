@@ -1,4 +1,6 @@
 /* Define standard variables and values for website */
+/* light mode */
+/* dark mode */
 /* Use the variables */
 body {
   background-color: lightblue;
@@ -12,10 +14,20 @@ body {
   padding: 3px; }
 
 .container .secondary-side-bar {
-  padding: 3px; }
+  padding: 3px;
+  display: flex;
+  flex-direction: column; }
 
 .container .channel-content {
   padding: 3px; }
 
 .container .channel-content .message {
+  padding: 3px; }
+
+.container .dm-container {
+  display: flex;
+  flex-direction: column;
+  padding: 3px; }
+
+.container .dm-container .message {
   padding: 3px; }

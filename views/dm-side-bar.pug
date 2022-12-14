@@ -1,8 +1,7 @@
 div.secondary-side-bar
     a(href='/direct-messages/friends') Friends
     each dm in recent_dms
-        a(href=dm.url)  
-
+        a(href=dm.url)
             each dmUser in dm.users
-                if(dmUser.username !=  user.username)
+                if(dmUser._id.valueOf() !=  user._id.valueOf())
                     span @#{dmUser.username}

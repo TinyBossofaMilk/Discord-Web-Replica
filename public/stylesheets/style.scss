@@ -1,9 +1,22 @@
 /* Define standard variables and values for website */
 $bgcolor: lightblue;
+
+/* light mode */
+$dark-side-bar-white: rgb(227,229,232);
+$med-side-bar-white: rgb(242,243,245);
+$light-main-content-white: rgb(255,255,255);
+
+/* dark mode */
+$dark-side-bar-dark: rgb(32,34,37);
+$med-side-bar-dark: rgb(47,49,54);
+$light-main-content-dark: rgb(54,57,63);
+$title-font-color: rgb(255,255,255);
+$body-font-color: rgb(145,147,151);
+
 $textcolor: darkblue;
 $fontsize: 18px;
 $subtextsize: $fontsize - 10px;
-$standardpadding: 3px;
+$standard-padding: 3px;
 
 /* Use the variables */
 body {
@@ -16,19 +29,34 @@ body {
   display: flex;
 
   nav.navbar {
-    padding: $standardpadding
+    padding: $standard-padding
   } 
   
   .secondary-side-bar {
-    padding: $standardpadding
+    padding: $standard-padding;
+    display: flex;
+    flex-direction: column;
+
   }
   
   .channel-content {
-    padding: $standardpadding;
+    padding: $standard-padding;
     
     .message {
-      padding: $standardpadding
+      padding: $standard-padding
       
+    }
+  }
+
+  .dm-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: $standard-padding;
+
+    
+    .message {
+      padding: $standard-padding;
     }
   }
 }

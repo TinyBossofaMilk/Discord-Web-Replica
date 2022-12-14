@@ -1,0 +1,2 @@
+to run sass transpiler
+    npm run sass-transpile # run the "sass-transpile" package script

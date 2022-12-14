@@ -106,7 +106,7 @@ exports.get_all_friends = (req, res) => {
           if(err) return next(err);
           friend.dm_url = dm.url;
 
-          console.log("current User " + res.locals.currentUser)
+          console.log("current User " + res.locals.currentUser._id)
           console.log("users " + user.friends)
           res.render("friends-page", {
             friends_list: user.friends, 
